@@ -1,0 +1,31 @@
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  scroll-behavior: smooth;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.6;
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  overflow-y: scroll;
+  height: 100%;
+  width: 100%;
+}
+
+/* App Layout */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+main {
+  flex: 1;
+}

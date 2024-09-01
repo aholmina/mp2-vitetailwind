@@ -1,0 +1,52 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+}
+
+
+.neon-toggle {
+  @apply bg-gray-800 p-1 rounded-full text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white;
+}
+
+.neon-toggle:hover {
+  @apply text-pink-400 bg-transparent shadow-lg shadow-pink-500/70;
+}
+
+
+/* Set the company name color to skyblue */
+.neon-logo span {
+  @apply text-sky-400;
+  transition: color 0.3s ease-in-out; /* Optional: Smooth transition for any hover effects */
+}
+
+/* Remove the hover effect for changing the color, as it's now skyblue by default */
+.neon-logo:hover span {
+  @apply text-sky-400; /* Keeps the color the same on hover */
+}
+
+/* Set the company name color to skyblue by default */
+.neon-logo span {
+  @apply text-sky-400 transition-colors duration-300 ease-in-out;
+}
+
+/* Change the company name color to black when dark mode is toggled */
+.dark-mode .neon-logo span {
+  @apply text-black;
+}
+
+/* Navlink default style */
+.neon-link {
+  @apply text-white font-bold transition-all duration-300 ease-in-out;
+}
+
+/* Navlink hover style (text remains white and bold) */
+.neon-link:hover {
+  @apply bg-pink-600 text-white font-bold px-4 py-2 rounded-lg shadow-md;
+}
+
