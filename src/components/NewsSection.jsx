@@ -1,24 +1,11 @@
+// File: src/components/NewsSection.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Search, ExternalLink } from 'lucide-react';
+import Api from './Api';
 
-const API_TOKEN = import.meta.env.VITE_CURRENT_API_TOKEN || 'MvNmDZsOa6sV0tpo6cRKn6iLqqKG_tcpdKD__jPiuGjIMBrX';
+const API_TOKEN = import.meta.env.VITE_CURRENTS_API_TOKEN;
 const API_URL = 'https://api.currentsapi.services/v1/latest-news';
-
-const fetchNews = async (query = '') => {
-  try {
-    const url = query
-      ? `https://api.currentsapi.services/v1/search?keywords=${encodeURIComponent(query)}&apiKey=${API_TOKEN}&limit=9`
-      : `${API_URL}?apiKey=${API_TOKEN}&limit=9`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching news:', error);
-    throw error;
-  }
-};
 
 const NewsSection = ({ darkMode }) => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -26,26 +13,33 @@ const NewsSection = ({ darkMode }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const fetchNewsData = async () => {
+  const fetchNews = async (query = '') => {
     setIsLoading(true);
     setError(null);
     try {
-      const data = await fetchNews(searchQuery);
+      const url = query
+        ? `https://api.currentsapi.services/v1/search?keywords=${encodeURIComponent(query)}&apiKey=${API_TOKEN}&limit=9`
+        : `${API_URL}?apiKey=${API_TOKEN}&limit=9`;
+      const data = await Api.fetchData(url);
+      if (data.status === 'error') {
+        throw new Error(data.message || 'An error occurred while fetching news');
+      }
       setNewsData(data.news.slice(0, 9)); // Ensure we only use up to 9 results
     } catch (err) {
-      setError(err.message);
+      setError(`Failed to fetch news: ${err.message}`);
+      console.error('Error details:', err);
     } finally {
       setIsLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchNewsData();
+    fetchNews();
   }, []);
 
   const handleSearch = (e) => {
     e.preventDefault();
-    fetchNewsData();
+    fetchNews(searchQuery);
   };
 
   const formatDate = (dateString) => {
@@ -75,7 +69,7 @@ const NewsSection = ({ darkMode }) => {
         </form>
 
         {isLoading && <p className="text-center text-xl text-gray-300">Loading news...</p>}
-        {error && <p className="text-center text-xl text-red-500">Error: {error}</p>}
+        {error && <p className="text-center text-xl text-red-500">{error}</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {newsData.map((item) => (

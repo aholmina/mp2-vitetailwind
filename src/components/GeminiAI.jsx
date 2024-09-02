@@ -1,9 +1,7 @@
+// File: src/components/GeminiAI.jsx
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, Loader, User, Bot, Search } from 'lucide-react';
-
-console.log('All env variables:', import.meta.env);
-console.log('VITE_GEMINI_API_KEY:', import.meta.env.VITE_GEMINI_API_KEY);
-console.log('MODE:', import.meta.env.MODE);
 
 const GeminiAI = () => {
   const [input, setInput] = useState('');
@@ -12,10 +10,8 @@ const GeminiAI = () => {
   const [error, setError] = useState(null);
   const chatContainerRef = useRef(null);
 
-  const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyCUsPd1SlVjJ03Tu8K5HQBEIRYAfgTEnsc';
+  const geminiApiKey = import.meta.env.VITE_GEMINI_API_KEY;
   const geminiApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${geminiApiKey}`;
-
-  console.log('API_KEY being used:', geminiApiKey);
 
   useEffect(() => {
     if (chatContainerRef.current) {

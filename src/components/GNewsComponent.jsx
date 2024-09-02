@@ -1,7 +1,10 @@
+// File: src/components/GNewsComponent.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Search, ExternalLink } from 'lucide-react';
 
-const API_KEY = import.meta.env.VITE_GNEWS_API_KEY || '620325099eac8848a4338f0ee846acc9';
+// Correctly access the environment variable
+const API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
 const API_URL = 'https://gnews.io/api/v4/top-headlines';
 
 const GNewsComponent = ({ darkMode }) => {

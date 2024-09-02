@@ -1,17 +1,15 @@
+// File: .env (in your project root)
+VITE_OPENWEATHER_API_KEY=your_actual_openweather_api_key_here
+
+// File: src/components/WeatherWidget.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Search, Droplets, Wind, Thermometer, Sun, CloudRain, Cloud, CloudSnow } from 'lucide-react';
-
 import ErrorBoundary from './ErrorBoundary';
 
-console.log('All env variables:', import.meta.env);
-console.log('VITE_OPENWEATHER_API_KEY:', import.meta.env.VITE_OPENWEATHER_API_KEY);
-console.log('MODE:', import.meta.env.MODE);
-
-const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || '91c55f5aa1c412f7068fa589ae99b46a';
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const API_BASE_URL = 'https://api.openweathermap.org/data/2.5';
 const GEOCODING_API_URL = 'https://api.openweathermap.org/geo/1.0/direct';
-
-console.log('API_KEY being used:', API_KEY);
 
 const WeatherWidget = ({ darkMode }) => {
   const [city, setCity] = useState('Las Pinas City');
@@ -191,7 +189,6 @@ const WeatherWidget = ({ darkMode }) => {
                 </div>
               </div>
 
-            
               <div>
                 <h3 className={`text-xl mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>24-Hour Forecast</h3>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
@@ -217,3 +214,4 @@ const WeatherWidget = ({ darkMode }) => {
 };
 
 export default WeatherWidget;
+

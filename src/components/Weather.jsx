@@ -1,9 +1,11 @@
+// File: src/components/Weather.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Search, Droplets, Wind, Thermometer, Sun, CloudRain, Cloud, CloudSnow } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import LoadingSpinner from './LoadingSpinner';
 
-const API_KEY = import.meta.env.VITE_VISUALCROSSING_API_KEY || 'WJQ87927G6LDHZL7MMABYGSUN';
+const API_KEY = import.meta.env.VITE_VISUALCROSSING_API_KEY;
 const API_BASE_URL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline';
 
 const Weather = ({ darkMode }) => {

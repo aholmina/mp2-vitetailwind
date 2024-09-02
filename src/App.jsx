@@ -1,9 +1,8 @@
+// File: src/App.jsx
+
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { BrowserRouter as Router, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { FileText, Cloud, DollarSign, Youtube, Newspaper, RefreshCw } from 'lucide-react';
-import { FcGoogle } from 'react-icons/fc';
-import { SiOpenai } from 'react-icons/si';
 
 // Component imports
 import Navbar from './components/Navbar';
@@ -23,19 +22,8 @@ import QuickLinks from './components/QuickLinks';
 import HomeSection from './components/HomeSection';
 import ApiSummaryWidget from './components/ApiSummaryWidget';
 
-// Asset imports
-import ReactVideo from './assets/React_Video.mp4';
-import dashboardBackground from './assets/Dashboard.jpg';
-
-// API endpoints and related code
-import { apiEndpoints, fetchData, fetchAllData } from './components/Api';
-
-console.log('All env variables:', import.meta.env);
-console.log('VITE_CURRENTS_API_TOKEN:', import.meta.env.VITE_CURRENTS_API_TOKEN);
-console.log('VITE_GNEWS_API_KEY:', import.meta.env.VITE_GNEWS_API_KEY);
-console.log('VITE_VISUALCROSSING_API_KEY:', import.meta.env.VITE_VISUALCROSSING_API_KEY);
-console.log('VITE_YOUTUBE_API_KEY:', import.meta.env.VITE_YOUTUBE_API_KEY);
-console.log('MODE:', import.meta.env.MODE);
+// API service import
+import { fetchAllData } from './components/Api';
 
 const BentoCard = React.memo(({ title, imageUrl, apiName, onSelect, isSelected, description }) => {
   return (
@@ -96,58 +84,60 @@ const HomePage = ({ darkMode, apiData, isLoading, dashboardRef }) => {
   }
 
   return (
-    <section className={`transition-all duration-300 w-full min-h-screen ${
-      darkMode 
-        ? 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] via-gray-500 to-gray-900 text-white' 
-        : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)] text-gray-900'
-    } backdrop-blur-md`}>
-      <HomeSection 
-        darkMode={darkMode} 
-        weatherData={apiData?.weather?.fullData} 
-        isLoading={isLoading} 
-      />
-      <main className="container mx-auto px-4" ref={dashboardRef}>
-        <h2 className="text-5xl font-bold mb-12 text-center text-white mt-20">DASHBOARD HUB</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          {['currents', 'gnews', 'youtube'].map(cardId => (
-            <BentoCard
-              key={cardId}
-              title={apiData[cardId]?.title}
-              imageUrl={apiData[cardId]?.image}
-              apiName={apiData[cardId]?.apiName}
-              onSelect={() => handleCardHover(cardId)}
-              isSelected={mainCard === cardId}
-              description={apiData[cardId]?.fullData?.description}
-            />
-          ))}
-        </div>
-        <div className="bg-white bg-opacity-20 dark:bg-gray-800 dark:bg-opacity-20 rounded-2xl p-8 min-h-[400px] shadow-lg mb-6 backdrop-blur-md">
-          {renderMainCard()}
-        </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-          {['weather', 'currency', 'gemini'].map(cardId => (
-            <BentoCard
-              key={cardId}
-              title={apiData[cardId]?.title}
-              imageUrl={apiData[cardId]?.image}
-              apiName={apiData[cardId]?.apiName}
-              onSelect={() => handleCardHover(cardId)}
-              isSelected={mainCard === cardId}
-              description={apiData[cardId]?.fullData?.description}
-            />
-          ))}
-        </div>
-        <div className="mt-6">
-          <ApiSummaryWidget darkMode={darkMode} apiData={apiData} />
-        </div>
-      </main>
-    </section>
+    <>
+      <section className={`transition-all duration-300 w-full min-h-screen ${
+        darkMode 
+          ? 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] via-gray-500 to-gray-900 text-white' 
+          : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)] text-gray-900'
+      } backdrop-blur-md`}>
+        <HomeSection 
+          darkMode={darkMode} 
+          weatherData={apiData?.weather?.fullData} 
+          isLoading={isLoading} 
+        />
+        <main className="container mx-auto px-4" ref={dashboardRef}>
+          <h2 className="text-5xl font-bold mb-12 text-center text-white mt-20">DASHBOARD HUB</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            {['currents', 'gnews', 'youtube'].map(cardId => (
+              <BentoCard
+                key={cardId}
+                title={apiData[cardId]?.title}
+                imageUrl={apiData[cardId]?.image}
+                apiName={apiData[cardId]?.apiName}
+                onSelect={() => handleCardHover(cardId)}
+                isSelected={mainCard === cardId}
+                description={apiData[cardId]?.fullData?.description}
+              />
+            ))}
+          </div>
+          <div className="bg-white bg-opacity-20 dark:bg-gray-800 dark:bg-opacity-20 rounded-2xl p-8 min-h-[400px] shadow-lg mb-6 backdrop-blur-md">
+            {renderMainCard()}
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {['weather', 'currency', 'gemini'].map(cardId => (
+              <BentoCard
+                key={cardId}
+                title={apiData[cardId]?.title}
+                imageUrl={apiData[cardId]?.image}
+                apiName={apiData[cardId]?.apiName}
+                onSelect={() => handleCardHover(cardId)}
+                isSelected={mainCard === cardId}
+                description={apiData[cardId]?.fullData?.description}
+              />
+            ))}
+          </div>
+          <div className="mt-6">
+            <ApiSummaryWidget darkMode={darkMode} apiData={apiData} />
+          </div>
+        </main>
+      </section>
+    </>
   );
 };
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
-  const [oauthError, setOauthError] = useState(null);
+  const [error, setError] = useState(null);
   const [apiData, setApiData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const dashboardRef = useRef(null);
@@ -160,12 +150,13 @@ function App() {
 
   const refreshData = useCallback(async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const data = await fetchAllData();
       setApiData(data);
     } catch (error) {
       console.error('Error fetching data:', error);
-      setOauthError('Failed to fetch data. Please try again.');
+      setError('Failed to fetch data. Please try again.');
     } finally {
       setIsLoading(false);
     }
@@ -191,8 +182,8 @@ function App() {
       <div className={`App min-h-screen flex flex-col ${darkMode ? 'dark' : ''}`}>
         <div className="flex-grow">
           <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
-          {oauthError ? (
-            <div className="text-red-500 p-4 text-center">{oauthError}</div>
+          {error ? (
+            <div className="text-red-500 p-4 text-center">{error}</div>
           ) : (
             <Routes>
               <Route path="/" element={<HomePage darkMode={darkMode} apiData={apiData} isLoading={isLoading} dashboardRef={dashboardRef} />} />

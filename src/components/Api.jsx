@@ -1,30 +1,22 @@
+
 import axios from 'axios';
 
-console.log('All env variables:', import.meta.env);
-console.log('VITE_CURRENTS_API_TOKEN:', import.meta.env.VITE_CURRENTS_API_TOKEN);
-console.log('VITE_GNEWS_API_KEY:', import.meta.env.VITE_GNEWS_API_KEY);
-console.log('VITE_VISUALCROSSING_API_KEY:', import.meta.env.VITE_VISUALCROSSING_API_KEY);
-console.log('VITE_CURRENCY_APP_ID:', import.meta.env.VITE_CURRENCY_APP_ID);
-console.log('VITE_YOUTUBE_API_KEY:', import.meta.env.VITE_YOUTUBE_API_KEY);
-console.log('VITE_GEMINI_API_KEY:', import.meta.env.VITE_GEMINI_API_KEY);
-console.log('MODE:', import.meta.env.MODE);
-
-const CURRENTS_API_TOKEN = import.meta.env.VITE_CURRENTS_API_TOKEN || 'MvNmDZsOa6sV0tpo6cRKn6iLqqKG_tcpdKD__jPiuGjIMBrX';
+const CURRENTS_API_TOKEN = import.meta.env.VITE_CURRENTS_API_TOKEN;
 const CURRENTS_API_URL = 'https://api.currentsapi.services/v1/latest-news';
 
-const GNEWS_API_KEY = import.meta.env.VITE_GNEWS_API_KEY || '620325099eac8848a4338f0ee846acc9';
+const GNEWS_API_KEY = import.meta.env.VITE_GNEWS_API_KEY;
 const GNEWS_API_URL = 'https://gnews.io/api/v4/top-headlines';
 
-const VISUALCROSSING_API_KEY = import.meta.env.VITE_VISUALCROSSING_API_KEY || 'WJQ87927G6LDHZL7MMABYGSUN';
+const VISUALCROSSING_API_KEY = import.meta.env.VITE_VISUALCROSSING_API_KEY;
 const VISUALCROSSING_API_URL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline';
 
-const CURRENCY_APP_ID = import.meta.env.VITE_CURRENCY_APP_ID || '1755cc46e0374909abec5c859c9a0f6a';
+const CURRENCY_APP_ID = import.meta.env.VITE_CURRENCY_APP_ID;
 const CURRENCY_BASE_URL = 'https://openexchangerates.org/api';
 
-const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY_2 || 'AIzaSyAITBXBREQk5iB9ascWPEsevLxSB98KfWU';
+const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 const YOUTUBE_API_URL = 'https://www.googleapis.com/youtube/v3';
 
-const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY || 'AIzaSyCUsPd1SlVjJ03Tu8K5HQBEIRYAfgTEnsc';
+const GEMINI_API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
 
 export const apiEndpoints = {
@@ -36,7 +28,7 @@ export const apiEndpoints = {
   gemini: GEMINI_API_URL,
 };
 
-export const fetchData = async (url, options = {}) => {
+const fetchData = async (url, options = {}) => {
   try {
     const response = await axios.get(url, options);
     return response.data;

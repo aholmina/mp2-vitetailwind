@@ -1,3 +1,5 @@
+// File: src/components/OpenWeatherMapWidget.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Search, Droplets, Wind, Thermometer, Sun, CloudRain, Cloud, CloudSnow, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -5,11 +7,11 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-const localizer = momentLocalizer(moment);
-
-const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY || 'b2092399197c171bd41d857e35626b15';
+const API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 const API_GEO_URL = 'https://api.openweathermap.org/geo/1.0/direct';
 const API_ONE_CALL_URL = 'https://api.openweathermap.org/data/3.0/onecall';
+
+const localizer = momentLocalizer(moment);
 
 const CustomToolbar = ({ date, onNavigate, label }) => {
   return (
@@ -33,18 +35,7 @@ const OpenWeatherMapWidget = ({ darkMode, data }) => {
   const [showCalendar, setShowCalendar] = useState(false);
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  useEffect(() => {
-    if (data && data.fullData) {
-      setWeatherData(data.fullData);
-      setLoading(false);
-    } else {
-      fetchWeatherData(city);
-    }
-  }, [data]);
-
   const fetchWeatherData = async (cityName) => {
-    setLoading(true);
-    setError(null);
     try {
       const geoResponse = await fetch(`${API_GEO_URL}?q=${encodeURIComponent(cityName)}&limit=1&appid=${API_KEY}`);
       if (!geoResponse.ok) throw new Error('City not found. Please check the spelling and try again.');
@@ -59,7 +50,27 @@ const OpenWeatherMapWidget = ({ darkMode, data }) => {
         throw new Error('Failed to fetch weather data. Please try again.');
       }
       const oneCallData = await oneCallResponse.json();
-      setWeatherData({ ...oneCallData, name: cityDetails });
+      return { ...oneCallData, name: cityDetails };
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (data && data.fullData) {
+      setWeatherData(data.fullData);
+      setLoading(false);
+    } else {
+      handleFetchWeatherData(city);
+    }
+  }, [data]);
+
+  const handleFetchWeatherData = async (cityName) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchWeatherData(cityName);
+      setWeatherData(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -70,7 +81,7 @@ const OpenWeatherMapWidget = ({ darkMode, data }) => {
   const handleCityChange = (event) => setCity(event.target.value);
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (city.trim() !== '') fetchWeatherData(city);
+    if (city.trim() !== '') handleFetchWeatherData(city);
   };
 
   const getWeatherIcon = (condition) => {

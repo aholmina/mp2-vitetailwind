@@ -1,14 +1,11 @@
+// File: src/components/YouTubeComponent.jsx
+
 import React, { useState, useEffect } from 'react';
 import { Search, ThumbsUp, MessageCircle, Share2, Send } from 'lucide-react';
 
-console.log('All env variables:', import.meta.env);
-console.log('VITE_YOUTUBE_API_KEY:', import.meta.env.VITE_YOUTUBE_API_KEY);
-console.log('MODE:', import.meta.env.MODE);
-
-const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY_1 || 'AIzaSyAITBXBREQk5iB9ascWPEsevLxSB98KfWU';
+// Correctly access the environment variable
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 const API_BASE_URL = 'https://www.googleapis.com/youtube/v3';
-
-console.log('API_KEY being used:', API_KEY);
 
 const YouTubeComponent = ({ darkMode }) => {
   const [searchQuery, setSearchQuery] = useState('');

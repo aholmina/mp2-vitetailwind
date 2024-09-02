@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import axios from 'axios';
 
-console.log('All env variables:', import.meta.env);
-console.log('VITE_CURRENCY_APP_ID:', import.meta.env.VITE_CURRENCY_APP_ID);
-console.log('MODE:', import.meta.env.MODE);
-
-const APP_ID = import.meta.env.VITE_CURRENCY_APP_ID || '1755cc46e0374909abec5c859c9a0f6a';
+const CURRENCY_APP_ID = import.meta.env.VITE_CURRENCY_APP_ID;
 const BASE_URL = 'https://openexchangerates.org/api';
-
-console.log('APP_ID being used:', APP_ID);
 
 const CurrencyExchange = ({ darkMode }) => {
   const [rates, setRates] = useState({});
@@ -18,44 +13,61 @@ const CurrencyExchange = ({ darkMode }) => {
   const [fromCurrency, setFromCurrency] = useState('USD');
   const [toCurrency, setToCurrency] = useState('EUR');
   const [convertedAmount, setConvertedAmount] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchData = async (url) => {
+    try {
+      const response = await axios.get(url);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      if (error.response) {
+        console.error('Response data:', error.response.data);
+        console.error('Response status:', error.response.status);
+        console.error('Response headers:', error.response.headers);
+      }
+      if (error.response && error.response.status === 401) {
+        throw new Error('API key is invalid or unauthorized. Please check your API key.');
+      }
+      throw new Error(`Failed to fetch data from ${url}: ${error.message}`);
+    }
+  };
 
   useEffect(() => {
-    fetchExchangeRates();
-    fetchCurrencies();
-    fetchHistoricalRates();
+    const fetchAllData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        // Validate API key format
+        if (!CURRENCY_APP_ID || !/^[a-f0-9]{32}$/.test(CURRENCY_APP_ID)) {
+          throw new Error('Invalid API key format. Please check your API key.');
+        }
+
+        const [ratesData, currenciesData, historicalData] = await Promise.all([
+          fetchData(`${BASE_URL}/latest.json?app_id=${CURRENCY_APP_ID}`),
+          fetchData(`${BASE_URL}/currencies.json`),
+          fetchData(`${BASE_URL}/historical/${getOneMonthAgoDate()}.json?app_id=${CURRENCY_APP_ID}`)
+        ]);
+        
+        setRates(ratesData.rates);
+        setCurrencies(currenciesData);
+        setHistoricalRates(historicalData.rates);
+      } catch (error) {
+        console.error('Error fetching all data:', error);
+        setError(error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAllData();
   }, []);
 
-  const fetchExchangeRates = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/latest.json?app_id=${APP_ID}`);
-      const data = await response.json();
-      setRates(data.rates);
-    } catch (error) {
-      console.error('Error fetching exchange rates:', error);
-    }
-  };
-
-  const fetchCurrencies = async () => {
-    try {
-      const response = await fetch(`${BASE_URL}/currencies.json`);
-      const data = await response.json();
-      setCurrencies(data);
-    } catch (error) {
-      console.error('Error fetching currencies:', error);
-    }
-  };
-
-  const fetchHistoricalRates = async () => {
-    try {
-      const date = new Date();
-      date.setMonth(date.getMonth() - 1);
-      const formattedDate = date.toISOString().split('T')[0];
-      const response = await fetch(`${BASE_URL}/historical/${formattedDate}.json?app_id=${APP_ID}`);
-      const data = await response.json();
-      setHistoricalRates(data.rates);
-    } catch (error) {
-      console.error('Error fetching historical rates:', error);
-    }
+  const getOneMonthAgoDate = () => {
+    const date = new Date();
+    date.setMonth(date.getMonth() - 1);
+    return date.toISOString().split('T')[0];
   };
 
   const handleConvert = () => {
@@ -76,6 +88,21 @@ const CurrencyExchange = ({ darkMode }) => {
     }
     return 'N/A';
   };
+
+  if (isLoading) {
+    return <div className="text-white text-center">Loading currency data...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className={`p-5 rounded-2xl bg-gradient-to-br from-gray-800 via-pink-500 to-gray-700 text-white shadow-lg h-full flex flex-col transition-all duration-300 ${darkMode ? 'dark' : ''}`}>
+        <h2 className="text-2xl font-semibold mb-4 text-center">Currency Exchange Rates</h2>
+        <p className="text-red-500 text-center">{error}</p>
+        <p className="text-white text-center mt-2">API Key: {CURRENCY_APP_ID ? 'Available' : 'Missing'}</p>
+        <p className="text-white text-center mt-2">API Key Format: {/^[a-f0-9]{32}$/.test(CURRENCY_APP_ID) ? 'Valid' : 'Invalid'}</p>
+      </div>
+    );
+  }
 
   return (
     <div className={`p-5 rounded-2xl bg-gradient-to-br from-gray-800 via-pink-500 to-gray-700 text-white shadow-lg h-full flex flex-col transition-all duration-300 ${darkMode ? 'dark' : ''}`}>
