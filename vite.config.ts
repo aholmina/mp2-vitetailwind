@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 
-// https://vitejs.dev/config/
+
 export default defineConfig(({ mode }) => {
   // Load env file based on `mode` in the current working directory.
   // Set the third parameter to '' to load all env regardless of the `VITE_` prefix.
@@ -33,6 +33,17 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       'process.env': env
+    },
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            vendor: ['react', 'react-dom'],
+          
+          },
+        },
+      },
+      chunkSizeWarningLimit: 600, // Increased from default 500
     },
   };
 });

@@ -109,17 +109,17 @@ const Weather = ({ darkMode }) => {
               : 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] to-[hsla(323,57%,39%,0.603)]'
             }`}>
               <h2 className="text-3xl font-bold mb-2 text-sky-500">{weatherData.resolvedAddress}</h2>
-              <p className="text-lg mb-4 text-gray-400">
+              <p className="text-lg italic mb-4 text-gray-400">
                 {formatDate(`${weatherData.days[0].datetime}T${weatherData.currentConditions.datetime}`)}
               </p>
               <div className="flex items-center mb-4">
                 {getWeatherIcon(weatherData.currentConditions.conditions)}
                 <span className="text-5xl ml-4">{Math.round(weatherData.currentConditions.temp)}°C</span>
               </div>
-              <p className="text-xl mb-2 text-sky-400">
+              <p className="text-xl  mb-2 text-sky-400">
                 {weatherData.currentConditions.conditions}
               </p>
-              <p className="mb-4 text-gray-600">{weatherData.description}</p>
+              <p className="mb-4 text-white-600 italic">{weatherData.description}</p>
               <div className="grid grid-cols-3 gap-4">
                 <div className="flex items-center">
                   <Thermometer className="mr-2 text-red-500" />
@@ -130,7 +130,7 @@ const Weather = ({ darkMode }) => {
                   <p>Humidity: {weatherData.currentConditions.humidity}%</p>
                 </div>
                 <div className="flex items-center">
-                  <Wind className="mr-2 text-gray-500" />
+                  <Wind className="mr-2 text-white-500" />
                   <p>Wind: {Math.round(weatherData.currentConditions.windspeed)} km/h</p>
                 </div>
               </div>

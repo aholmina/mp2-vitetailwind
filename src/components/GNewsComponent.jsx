@@ -44,7 +44,7 @@ const GNewsComponent = ({ darkMode }) => {
     <div className={`${darkMode ? 'bg-gradient-to-br from-gray-900 via-pink-500 to-gray-800' : 'bg-gradient-to-br from-gray-700 via-pink-500 to-gray-700'} backdrop-blur-md border-t border-white/10 transition-all duration-300 ease-in-out relative overflow-hidden`}>
       <div className="absolute inset-0 bg-gradient-to-r from-pink-500 to-cyan-500 opacity-0 hover:opacity-100 transition-opacity duration-300 ease-in-out"></div>
       <div className="container mx-auto px-4 py-8 relative z-10">
-        <h1 className="text-4xl font-bold mb-8 text-center text-sky-400 uppercase tracking-wide">GNews Headlines</h1>
+        <h1 className="text-4xl font-bold mb-8 text-center text-sky-400 uppercase tracking-wide italic">GNews Headlines</h1>
         
         <form onSubmit={handleSearch} className="mb-8">
           <div className="flex rounded-lg overflow-hidden">
@@ -61,8 +61,8 @@ const GNewsComponent = ({ darkMode }) => {
           </div>
         </form>
 
-        {isLoading && <p className="text-center text-xl text-gray-300">Loading news...</p>}
-        {error && <p className="text-center text-xl text-red-500">{error}</p>}
+        {isLoading && <p className="text-center text-xl text-gray-300 italic">Loading news...</p>}
+        {error && <p className="text-center text-xl text-red-500 italic">{error}</p>}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article) => (
@@ -80,9 +80,9 @@ const ArticleCard = ({ article, darkMode }) => (
       <img src={article.image} alt={article.title} className="w-full h-48 object-cover" />
     )}
     <div className="p-6">
-      <h2 className={`font-bold text-xl mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>{article.title}</h2>
-      <p className={`text-sm mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>{formatDate(article.publishedAt)}</p>
-      <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{article.description}</p>
+      <h2 className={`font-bold text-xl mb-2 ${darkMode ? 'text-white' : 'text-gray-800'} italic`}>{article.title}</h2>
+      <p className={`text-sm mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-500'} italic`}>{formatDate(article.publishedAt)}</p>
+      <p className={`mb-4 ${darkMode ? 'text-gray-300' : 'text-gray-600'} italic`}>{article.description}</p>
       <a
         href={article.url}
         target="_blank"

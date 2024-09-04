@@ -1,5 +1,3 @@
-// File: src/components/OpenWeatherMapWidget.jsx
-
 import React, { useState, useEffect } from 'react';
 import { Search, Droplets, Wind, Thermometer, Sun, CloudRain, Cloud, CloudSnow, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
@@ -15,13 +13,13 @@ const localizer = momentLocalizer(moment);
 
 const CustomToolbar = ({ date, onNavigate, label }) => {
   return (
-    <div className="flex justify-between items-center mb-2 mt-3">
+    <div className="flex justify-between items-center mb-1 mt-1">
       <button onClick={() => onNavigate('PREV')} className="text-white">
-        <ChevronLeft size={20} />
+        <ChevronLeft size={16} />
       </button>
-      <span className="text-white font-bold">{label}</span>
+      <span className="text-white text-sm font-bold">{label}</span>
       <button onClick={() => onNavigate('NEXT')} className="text-white">
-        <ChevronRight size={20} />
+        <ChevronRight size={16} />
       </button>
     </div>
   );
@@ -86,11 +84,11 @@ const OpenWeatherMapWidget = ({ darkMode, data }) => {
 
   const getWeatherIcon = (condition) => {
     switch (condition.toLowerCase()) {
-      case 'clear': return <Sun className="text-sky-400" size={48} />;
-      case 'rain': return <CloudRain className="text-sky-400" size={48} />;
-      case 'clouds': return <Cloud className="text-sky-400" size={48} />;
-      case 'snow': return <CloudSnow className="text-sky-400" size={48} />;
-      default: return <Sun className="text-sky-400" size={48} />;
+      case 'clear': return <Sun className="text-yellow-400" size={48} />;
+      case 'rain': return <CloudRain className="text-blue-400" size={48} />;
+      case 'clouds': return <Cloud className="text-gray-300" size={48} />;
+      case 'snow': return <CloudSnow className="text-blue-200" size={48} />;
+      default: return <Sun className="text-yellow-400" size={48} />;
     }
   };
 
@@ -101,63 +99,83 @@ const OpenWeatherMapWidget = ({ darkMode, data }) => {
     }));
   };
 
-  if (loading) return <div className="text-center text-white">Loading weather data...</div>;
-  if (error) return <div className="text-center text-red-500">{error}</div>;
-  if (!weatherData || !weatherData.current) return <div className="text-center text-white">No weather data available</div>;
+  if (loading) return <div className="text-center text-white text-sm">Loading weather data...</div>;
+  if (error) return <div className="text-center text-red-500 text-sm">{error}</div>;
+  if (!weatherData || !weatherData.current) return <div className="text-center text-white text-sm">No weather data available</div>;
 
   return (
-    <div className={`${darkMode ? 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] via-gray-500 to-gray-900' : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)]'} backdrop-blur-md text-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 ease-in-out`}>
-      <div className="p-6">
-        <form onSubmit={handleSubmit} className="mb-9">
-          <div className="flex rounded-lg overflow-hidden">
+    <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)]'} backdrop-blur-md rounded-xl overflow-hidden shadow-lg transition-all duration-300 ease-in-out`}>
+      <div className="p-4">
+        <form onSubmit={handleSubmit} className="mb-6">
+          <div className="flex items-center">
             <input
               type="text"
-              className="flex-grow p-3 bg-white bg-opacity-20 text-white placeholder-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              className={`flex-grow p-2 rounded-l-lg border ${darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-300'}`}
               value={city}
               onChange={handleCityChange}
               placeholder="Enter city name"
             />
-            <button type="submit" className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 hover:from-purple-600 hover:to-pink-600 transition-colors duration-300">
+            <button type="submit" className="p-2 bg-blue-500 text-white rounded-r-lg">
               <Search size={24} />
             </button>
           </div>
         </form>
 
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold mb-2">{weatherData.name}</h2>
-          <div className="flex items-center justify-center mb-4">
-            {getWeatherIcon(weatherData.current.weather[0].main)}
-            <span className="text-5xl font-bold ml-2 mt-5">{Math.round(weatherData.current.temp)}°C</span>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className={`rounded-lg shadow-lg p-4 transition-all duration-300 ${darkMode 
+            ? 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] via-gray-500 to-gray-900'
+            : 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] to-[hsla(323,57%,39%,0.603)]'
+          }`}>
+            <h2 className="text-2xl font-bold mb-2 text-sky-500">{weatherData.name}</h2>
+            <div className="flex items-center justify-center mb-2">
+              {getWeatherIcon(weatherData.current.weather[0].main)}
+              <span className="text-4xl ml-4">{Math.round(weatherData.current.temp)}°C</span>
+            </div>
+            <p className="text-lg mb-2 text-sky-400">
+              {weatherData.current.weather[0].main}
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+              <div className="flex items-center text-sm">
+                <Thermometer className="mr-1 text-red-400 flex-shrink-0" size={20} />
+                <p>Feels like: {Math.round(weatherData.current.feels_like)}°C</p>
+              </div>
+              <div className="flex items-center text-sm">
+                <Droplets className="mr-1  text-blue-400 flex-shrink-0" size={20} />
+                <p>Humidity: {weatherData.current.humidity}%</p>
+              </div>
+              <div className="flex items-center text-sm ">
+                <Wind className="mr-2 text-yellow-400 flex-shrink-0" size={20} />
+                <p>Wind: {Math.round(weatherData.current.wind_speed)} km/h</p>
+              </div>
+            </div>
           </div>
-          <p className="text-2xl mb-4">{weatherData.current.weather[0].main}</p>
-          <div className="grid grid-cols-3 gap-4">
-            <div className="flex flex-col items-center">
-              <Thermometer size={24} className="mb-2 text-sky-400" />
-              <p className="text-sm">Feels like: {Math.round(weatherData.current.feels_like)}°C</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <Droplets size={24} className="mb-2 text-sky-400" />
-              <p className="text-sm">Humidity: {weatherData.current.humidity}%</p>
-            </div>
-            <div className="flex flex-col items-center">
-              <Wind size={24} className="mb-2 text-sky-400" />
-              <p className="text-sm">Wind: {Math.round(weatherData.current.wind_speed)} km/h</p>
-            </div>
+          
+          <div className={`rounded-lg shadow-lg p-4 transition-all duration-300 ${darkMode 
+            ? 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] via-gray-500 to-gray-900'
+            : 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] to-[hsla(323,57%,39%,0.603)]'
+          }`}>
+            <h3 className="text-xl font-bold mb-2 text-white">Today's Overview</h3>
+            <p className="text-base mb-1 italic">{weatherData.daily[0].weather[0].description}</p>
+            <p className="mb-1 mt-2 text-sm">
+              High: {Math.round(weatherData.daily[0].temp.max)}°C, Low: {Math.round(weatherData.daily[0].temp.min)}°C
+            </p>
+            <p className="mb-1 text-sm">Precipitation: {Math.round(weatherData.daily[0].pop * 100)}%</p>
+            <p className="text-sm">UV Index: {weatherData.daily[0].uvi}</p>
           </div>
         </div>
 
-        <div className="mb-6">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-semibold mt-5 mb-5">Calendar</h3>
+        <div className="mb-4">
+          <div className="flex justify-between items-center mb-2">
+            <h3 className="text-xl font-bold text-white">Calendar</h3>
             <button
               onClick={() => setShowCalendar(!showCalendar)}
-              className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full hover:from-purple-600 hover:to-pink-600 transition-colors duration-300"
+              className="p-1 bg-blue-500 text-white rounded-full hover:bg-blue-600 transition-colors duration-300"
             >
-              {showCalendar ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
+              {showCalendar ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
             </button>
           </div>
           {showCalendar && (
-            <div className="h-80 overflow-hidden mb-2 bg-white bg-opacity-10 rounded-lg p-2">
+            <div className={`h-48 overflow-hidden mb-2 ${darkMode ? 'bg-gray-800' : 'bg-white bg-opacity-10'} rounded-lg p-1`}>
               <Calendar
                 localizer={localizer}
                 events={[]}
@@ -176,28 +194,20 @@ const OpenWeatherMapWidget = ({ darkMode, data }) => {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <h3 className="text-2xl font-semibold mb-4 mt-5">Today's Overview</h3>
-            <p className="mb-2">{weatherData.daily[0].weather[0].description}</p>
-            <p className="mb-2">
-              High: {Math.round(weatherData.daily[0].temp.max)}°C, Low: {Math.round(weatherData.daily[0].temp.min)}°C
-            </p>
-            <p className="mb-2">Precipitation: {Math.round(weatherData.daily[0].pop * 100)}%</p>
-            <p>UV Index: {weatherData.daily[0].uvi}</p>
-          </div>
-          <div>
-            <h3 className="text-2xl font-semibold mb-4 mt-9">24-Hour Forecast</h3>
-            <ResponsiveContainer width="100%" height={200}>
-              <LineChart data={formatChartData(weatherData.hourly)}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.1)" />
-                <XAxis dataKey="time" stroke="#fff" />
-                <YAxis stroke="#fff" />
-                <Tooltip contentStyle={{ backgroundColor: 'rgba(0, 0, 0, 0.8)', border: 'none' }} />
-                <Line type="monotone" dataKey="temp" stroke="#8884d8" strokeWidth={2} dot={false} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
+        <div className={`rounded-lg shadow-lg p-4 transition-all duration-300 ${darkMode 
+          ? 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] via-gray-500 to-gray-900'
+          : 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] to-[hsla(323,57%,39%,0.603)]'
+        }`}>
+          <h3 className="text-xl font-bold mb-4 text-white">24-Hour Forecast</h3>
+          <ResponsiveContainer width="100%" height={200}>
+            <LineChart data={formatChartData(weatherData.hourly)}>
+              <CartesianGrid strokeDasharray="3 3" stroke={darkMode ? "#4a4a4a" : "rgba(255, 255, 255, 0.1)"} />
+              <XAxis dataKey="time" stroke={darkMode ? "#d6d6d6" : "#fff"} tick={{ fontSize: 10 }} />
+              <YAxis stroke={darkMode ? "#d6d6d6" : "#fff"} tick={{ fontSize: 10 }} />
+              <Tooltip contentStyle={{ backgroundColor: darkMode ? '#2a2a2a' : 'rgba(0, 0, 0, 0.8)', border: darkMode ? '1px solid #6f42c1' : 'none' }} />
+              <Line type="monotone" dataKey="temp" stroke="#8884d8" strokeWidth={2} dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>

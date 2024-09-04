@@ -11,6 +11,9 @@ import Video2 from '../assets/React_Video2.mp4';
 import Video3 from '../assets/React_Video3.mp4';
 import Video14 from '../assets/React_Video4.mp4';
 
+// Import website image
+import WebsiteImage from '../assets/Dashboard.jpg';
+
 const videoSources = [
   { src: Video1, title: "Gemini AI", description: "Ask about what's in your mind and get the answers you need" },
   { src: Video2, title: "Integrated Weather", description: "Provides the overview of the weather forecast " },
@@ -20,49 +23,58 @@ const videoSources = [
 
 const ApiOverviewCard = ({ title, apiName, imageUrl, darkMode }) => {
   return (
-    <div className={`bg-opacity-20 backdrop-blur-sm ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-lg p-4 hover:bg-opacity-30 transition-all duration-300`}>
-      <div className="mb-4">
+    <div className={`
+      bg-opacity-30 text-white border-b-4 border-purple-500
+      rounded-2xl p-4 transition-all duration-300 transform hover:scale-105
+      backdrop-filter backdrop-blur-lg
+      ${darkMode 
+        ? 'bg-gray-900 hover:shadow-[0_10px_20px_rgba(147,51,234,0.5)]' 
+        : 'bg-white hover:shadow-[0_10px_20px_rgba(59,130,246,0.5)]'}
+      shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]
+    `}>
+      <div className="mb-2 overflow-hidden rounded-xl">
         {imageUrl ? (
-          <img src={imageUrl} alt={title} className="w-full h-auto rounded-lg" />
+          <img src={imageUrl} alt={title} className="w-full h-auto rounded-lg transition-transform duration-300 hover:scale-110" />
         ) : (
-          <div className="w-full h-40 bg-gray-700 bg-opacity-30 rounded-lg flex items-center justify-center">
-            <span className={`${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>No Image Available</span>
+          <div className="w-full h-20 bg-gray-700 bg-opacity-30 rounded-lg flex items-center justify-center">
+            <span className={darkMode ? 'text-gray-300' : 'text-gray-600'}>No Image</span>
           </div>
         )}
       </div>
-      <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>{apiName}</h3>
-      <h4 className={`text-md font-medium mb-1 ${darkMode ? 'text-gray-200' : 'text-gray-600'}`}>{title}</h4>
+      <h3 className={`text-lg font-bold mb-1 ${darkMode ? 'text-white' : 'text-gray-800'}`}>{apiName}</h3>
+      <h4 className={`text-sm font-bold italic ${darkMode ? 'text-white' : 'text-gray-700'}`}>{title}</h4>
     </div>
   );
 };
 
-const VideoMasonryGrid = ({ darkMode }) => {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-      {videoSources.map(({ src, title, description }, index) => (
-        <div key={index} className={`bg-opacity-20 backdrop-blur-sm ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-2xl overflow-hidden shadow-lg transition-all duration-300 ease-in-out p-4`}>
-          <div className={`w-full aspect-video flex items-center justify-center ${src === Video14 ? '' : 'px-8'}`}>
-            <video 
-              className="w-full h-full object-cover rounded-lg" 
-              autoPlay
-              loop
-              muted
-              playsInline
-              controls
-            >
-              <source src={src} type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
-          </div>
-          <div className="mt-4">
-            <h3 className={`text-lg font-semibold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>{title}</h3>
-            <p className={`text-sm ${darkMode ? 'text-gray-200' : 'text-gray-600'}`}>{description}</p>
-          </div>
-        </div>
-      ))}
+const VideoCard = ({ src, title, description, darkMode }) => (
+  <div className={`
+    bg-opacity-30 text-white border-b-4 border-purple-500
+    rounded-2xl overflow-hidden transition-all duration-300 ease-in-out mb-4 transform hover:scale-105
+    backdrop-filter backdrop-blur-lg
+    ${darkMode
+      ? 'bg-gray-900 hover:shadow-[0_10px_20px_rgba(147,51,234,0.5)]'
+      : 'bg-white hover:shadow-[0_10px_20px_rgba(59,130,246,0.5)]'}
+    shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]
+  `}>
+    <div className="aspect-video">
+      <video 
+        className="w-full h-full object-fill" 
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src={src} type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
     </div>
-  );
-};
+    <div className="p-3">
+      <h3 className={`text-base font-bold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{title}</h3>
+      <p className={`text-xs mt-1 font-bold italic ${darkMode ? 'text-white' : 'text-gray-600'}`}>{description}</p>
+    </div>
+  </div>
+);
 
 const HomeSection = ({ darkMode, weatherData, isLoading }) => {
   const navigate = useNavigate();
@@ -85,8 +97,14 @@ const HomeSection = ({ darkMode, weatherData, isLoading }) => {
     navigate('/dashboard');
   };
 
+  const websiteInfo = {
+    image: WebsiteImage,
+    title: "Data HUB",
+    description: "Discover a world of information at your fingertips. Our platform brings you the latest in weather, news, and more, all in one place."
+  };
+
   return (
-    <header className="relative py-5 mb-4">
+    <header className={`relative min-h-screen py-10 ${darkMode ? 'bg-black' : 'bg-gradient-to-r from-gray-100 via-pink-100 to-gray-100'}`}>
       {/* Background Video */}
       <div className="absolute inset-0 overflow-hidden">
         <video
@@ -95,10 +113,7 @@ const HomeSection = ({ darkMode, weatherData, isLoading }) => {
           muted
           playsInline
           className="object-cover w-full h-full"
-          onError={(event) => {
-            console.error('Error loading video:', event);
-            event.target.style.display = 'none';
-          }}
+          style={{ filter: darkMode ? 'brightness(0.3)' : 'brightness(0.8)' }}
         >
           <source src={ReactVideo} type="video/mp4" />
           Your browser does not support the video tag.
@@ -106,84 +121,120 @@ const HomeSection = ({ darkMode, weatherData, isLoading }) => {
       </div>
 
       {/* Content Overlay */}
-      <div className="container mx-auto relative z-10">
+      <div className="container mx-auto relative z-10 px-4">
         {/* Main Heading */}
-        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-8 text-center text-white mt-12" style={{ textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}>
+        <h1 className={`
+          text-4xl md:text-5xl lg:text-8xl font-extrabold mb-8 text-center mt-10
+          ${darkMode 
+            ? 'text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600' 
+            : 'text-white'}
+          transition-all duration-300 ease-in-out transform hover:scale-105
+        `} style={{ textShadow: darkMode ? 'none' : '2px 2px 4px rgba(0,0,0,0.3)' }}>
           Discover Today's Trends
         </h1>
 
-        <div className="flex flex-col lg:flex-row justify-between items-stretch">
-          {/* Left Column (expanded) */}
-          <div className="lg:w-2/3 flex flex-col p-4">
-            <div className={`flex-grow bg-opacity-20 backdrop-blur-md ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4`}>
-              {/* API Overview */}
-              <div className="mt-4">
-                <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`} style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}>API Overview</h2>
-                {bentoData ? (
-                  <div className="grid grid-cols-2 gap-4 mb-6">
-                    {['currents', 'youtube'].map((key) => (
-                      <ApiOverviewCard
-                        key={key}
-                        title={bentoData[key]?.title || 'N/A'}
-                        apiName={bentoData[key]?.apiName || key.toUpperCase()}
-                        imageUrl={bentoData[key]?.imageUrl || ''}
-                        darkMode={darkMode}
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  <div className={`text-center mb-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>No API data available</div>
-                )}
-                
-                {/* Featured Videos Masonry Grid */}
-                <div className="mt-6">
-                  <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`} style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}>Featured Videos</h2>
-                  <VideoMasonryGrid darkMode={darkMode} />
-                </div>
+        {/* Weather and Featured Videos */}
+        <div className="flex flex-col lg:flex-row justify-between space-y-8 lg:space-y-0 lg:space-x-8 mb-8">
+          {/* Weather Widget */}
+          <div className={`
+            lg:w-1/2
+            bg-opacity-30 rounded-3xl p-6 backdrop-filter backdrop-blur-lg
+            transition-all duration-300 transform hover:scale-105
+            ${darkMode
+              ? 'bg-gray-900 hover:shadow-[0_10px_20px_rgba(147,51,234,0.5)]'
+              : 'bg-white hover:shadow-[0_10px_20px_rgba(59,130,246,0.5)]'}
+            shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]
+          `}>
+            {isLoading ? (
+              <div className={`text-center ${darkMode ? 'text-white font-bold' : 'text-gray-800'}`}>Loading weather data...</div>
+            ) : (
+              <OpenWeatherMapWidget
+                darkMode={darkMode}
+                data={weatherData && weatherData.fullData ? weatherData.fullData : null}
+                layout="row"
+              />
+            )}
+          </div>
 
-                {/* More About API button */}
-                <div className="text-center mt-6">
-                  <button
-                    onClick={handleMoreAboutClick}
-                    className={`
-                      px-6 py-3 rounded-xl
-                      bg-gradient-to-r from-purple-500 to-pink-500
-                      text-white
-                      transition duration-300 ease-in-out
-                      hover:from-purple-600 hover:to-pink-600
-                      focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50
-                      shadow-md
-                    `}
-                  >
-                    More About API
-                  </button>
-                </div>
+          {/* Featured Videos */}
+          <div className="lg:w-1/2 space-y-4 text-white">
+            <h1 className={`
+              text-4xl font-extrabold mb-10 mt-10 text-center 
+              ${darkMode ? 'text-white' : 'text-white-800'}
+            `}>
+              Welcome to Our Platform
+            </h1>
+            <h2 className={`
+              text-2xl font-extrabold mb-10 mt-20 text-white
+              ${darkMode ? 'text-white' : 'text-white-800'}
+            `}>
+              FEATURED VIDEOS
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {videoSources.map((video, index) => (
+                <VideoCard key={index} {...video} darkMode={darkMode} />
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* API Overview and Quick Links */}
+        <div className="flex flex-col lg:flex-row justify-between space-y-8 lg:space-y-0 lg:space-x-8">
+          {/* API Overview */}
+          <div className="lg:w-1/2 space-y-4">
+            <h2 className={`
+              text-2xl font-extrabold mb-10 mt-8 text-white
+              ${darkMode ? 'text-white' : 'text-white-800'}
+            `}>
+              API OVERVIEW
+            </h2>
+            {bentoData ? (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                {['currents', 'youtube'].map((key) => (
+                  <ApiOverviewCard
+                    key={key}
+                    title={bentoData[key]?.title || 'N/A'}
+                    apiName={bentoData[key]?.apiName || key.toUpperCase()}
+                    imageUrl={bentoData[key]?.imageUrl || ''}
+                    darkMode={darkMode}
+                  />
+                ))}
               </div>
+            ) : (
+              <div className={`text-center mb-4 ${darkMode ? 'text-white font-bold' : 'text-gray-800'}`}>No API data available</div>
+            )}
+            {/* More About API button */}
+            <div className="text-center">
+              <button
+                onClick={handleMoreAboutClick}
+                className={`
+                  w-full sm:w-auto px-6 py-3 rounded-full text-base font-bold mt-8
+                  bg-gradient-to-r from-sky-400 to-pink-400 text-white
+                  transition duration-300 ease-in-out
+                  hover:from-sky-500 hover:to-pink-500
+                  focus:outline-none focus:ring-4 focus:ring-sky-500 focus:ring-opacity-50
+                  transform hover:scale-105
+                  ${darkMode
+                    ? 'hover:shadow-[0_0_20px_rgba(147,51,234,0.5)]'
+                    : 'shadow-lg shadow-sky-500/50'}
+                `}
+              >
+                More About API
+              </button>
             </div>
           </div>
 
-          {/* Right Column (narrowed) */}
-          <div className="lg:w-1/3 flex flex-col p-4">
-            <div className={`flex-grow bg-opacity-20 backdrop-blur-md ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-xl p-4`}>
-              {isLoading ? (
-                <div className={`text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>Loading weather data...</div>
-              ) : (
-                <>
-                  <OpenWeatherMapWidget
-                    darkMode={darkMode}
-                    data={weatherData && weatherData.fullData ? weatherData.fullData : null}
-                  />
-                  {/* Today's Overview and 24 Hour Forecast */}
-                  <div className={`mt-6 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
-                    {/* Add your Today's Overview and 24 Hour Forecast content here */}
-                  </div>
-                  {/* QuickLinks */}
-                  <div className="mt-6">
-                    <h2 className={`text-2xl font-bold mb-4 ${darkMode ? 'text-white' : 'text-gray-800'}`} style={{ textShadow: '1px 1px 2px rgba(0,0,0,0.3)' }}>Quick Links</h2>
-                    <QuickLinks darkMode={darkMode} />
-                  </div>
-                </>
-              )}
+          {/* Quick Links */}
+          <div className="lg:w-1/2 flex flex-col justify-between">
+            <div className={`
+              flex-grow 
+              bg-opacity-30 rounded-3xl p-6 backdrop-filter backdrop-blur-lg
+              ${darkMode
+                ? 'bg-gray-900 hover:shadow-[0_10px_20px_rgba(147,51,234,0.5)]'
+                : 'bg-white hover:shadow-[0_10px_20px_rgba(59,130,246,0.5)]'}
+              shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]
+            `}>
+              <QuickLinks darkMode={darkMode} websiteInfo={websiteInfo} />
             </div>
           </div>
         </div>

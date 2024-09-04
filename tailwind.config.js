@@ -1,4 +1,5 @@
 const plugin = require('tailwindcss/plugin')
+const defaultTheme = require('tailwindcss/defaultTheme')
 
 module.exports = {
   content: [
@@ -9,6 +10,7 @@ module.exports = {
     extend: {
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],
+        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: '#df378bd7',
@@ -58,19 +60,3 @@ module.exports = {
     })
   ],
 }
-
-// tailwind.config.js
-const defaultTheme = require('tailwindcss/defaultTheme')
-
-module.exports = {
-  theme: {
-    extend: {
-      fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
-      },
-    },
-  },
-  // ...
-}
-
-

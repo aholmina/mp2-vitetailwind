@@ -30,19 +30,21 @@ const Contact = ({ darkMode }) => {
 
   return (
     <section className={`py-16 transition-all duration-300 w-full min-h-screen ${
-      darkMode 
-        ? 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] via-gray-500 to-gray-900 text-white' 
-        : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)] text-gray-900'
-    } backdrop-blur-md`}>
+      darkMode ? 'bg-black text-white' : 'bg-white text-gray-900'
+    }`}>
       <div className="container mx-auto px-4">
-        <h1 className="text-5xl font-bold mb-12 text-center text-white">Contact Us</h1>
+        <h1 className={`text-5xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-gray-900'}`}>Contact Us</h1>
         <div className="flex flex-col lg:flex-row gap-12 items-stretch">
           <div className="flex-1">
-            <div className="p-8 rounded-2xl shadow-lg transition-all duration-300 bg-white bg-opacity-20 dark:bg-gray-800 dark:bg-opacity-20 backdrop-blur-md">
-              <h3 className="text-2xl font-semibold mb-4 text-center text-white">Get in Touch</h3>
+            <div className={`p-8 rounded-2xl shadow-lg transition-all duration-300 ${
+              darkMode 
+                ? 'bg-gray-900 hover:shadow-[0_10px_20px_rgba(2,132,199,0.5),_0_6px_6px_rgba(219,39,119,0.5)]' 
+                : 'bg-white'
+            } backdrop-blur-md`}>
+              <h3 className={`text-2xl font-semibold mb-4 text-center italic ${darkMode ? 'text-white' : 'text-gray-900'}`}>Get in Touch</h3>
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="relative">
-                  <FontAwesomeIcon icon={faEnvelope} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white" />
+                  <FontAwesomeIcon icon={faEnvelope} className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-white' : 'text-gray-600'}`} />
                   <input
                     type="email"
                     id="email"
@@ -51,11 +53,15 @@ const Contact = ({ darkMode }) => {
                     onChange={handleChange}
                     required
                     placeholder="Enter your email"
-                    className="w-full pl-10 pr-4 py-3 border border-white border-opacity-50 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg ${
+                      darkMode 
+                        ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' 
+                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                    } focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300`}
                   />
                 </div>
                 <div className="relative">
-                  <FontAwesomeIcon icon={faPhone} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white" />
+                  <FontAwesomeIcon icon={faPhone} className={`absolute left-3 top-1/2 transform -translate-y-1/2 ${darkMode ? 'text-white' : 'text-gray-600'}`} />
                   <input
                     type="tel"
                     id="phoneNumber"
@@ -64,11 +70,15 @@ const Contact = ({ darkMode }) => {
                     onChange={handleChange}
                     required
                     placeholder="Enter your phone number"
-                    className="w-full pl-10 pr-4 py-3 border border-white border-opacity-50 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg ${
+                      darkMode 
+                        ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' 
+                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                    } focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300`}
                   />
                 </div>
                 <div className="relative">
-                  <FontAwesomeIcon icon={faCommentDots} className="absolute left-3 top-4 text-white" />
+                  <FontAwesomeIcon icon={faCommentDots} className={`absolute left-3 top-4 ${darkMode ? 'text-white' : 'text-gray-600'}`} />
                   <textarea
                     id="message"
                     name="message"
@@ -77,22 +87,30 @@ const Contact = ({ darkMode }) => {
                     required
                     placeholder="Your message"
                     rows="6"
-                    className="w-full pl-10 pr-4 py-3 border border-white border-opacity-50 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-70 focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300"
+                    className={`w-full pl-10 pr-4 py-3 border rounded-lg ${
+                      darkMode 
+                        ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-400' 
+                        : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                    } focus:outline-none focus:ring-2 focus:ring-purple-500 transition-all duration-300`}
                   ></textarea>
                 </div>
                 <button 
                   type="submit" 
-                  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 relative overflow-hidden group text-lg font-semibold"
+                  className="w-full bg-gradient-to-l from-purple-500 to-pink-500 text-white py-3 px-6 rounded-lg hover:from-purple-600 hover:to-pink-600 transition-all duration-300 relative overflow-hidden group text-lg font-semibold"
                 >
                   Send Message
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-l from-purple-500 to-pink-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </button>
               </form>
             </div>
           </div>
           <div className="flex-1">
-            <div className="p-8 rounded-2xl shadow-lg transition-all duration-300 bg-white bg-opacity-20 dark:bg-gray-800 dark:bg-opacity-20 backdrop-blur-md h-full">
-              <h3 className="text-2xl font-semibold mb-4 text-center text-white">Other Ways to Reach Us</h3>
+            <div className={`p-8 rounded-2xl shadow-lg transition-all duration-300 ${
+              darkMode 
+                ? 'bg-gray-900 hover:shadow-[0_10px_20px_rgba(2,132,199,0.5),_0_6px_6px_rgba(219,39,119,0.5)]' 
+                : 'bg-white'
+            } backdrop-blur-md h-full`}>
+              <h3 className={`text-2xl font-semibold mb-4 text-center italic ${darkMode ? 'text-white' : 'text-gray-900'}`}>Other Ways to Reach Us</h3>
               <div className="relative h-full">
                 <img
                   src={ContactImage}

@@ -1,25 +1,39 @@
 import React from 'react';
-import { RefreshCw, FileText, Cloud, DollarSign, Youtube } from 'react-feather';
+import { RefreshCw, FileText, Cloud, DollarSign, Youtube } from 'lucide-react';
 import { FcGoogle } from 'react-icons/fc';
 import { SiOpenai } from 'react-icons/si';
-import ReactVideo from '../assets/React_Video.mp4';
 
 const BentoCard = ({ title, value, icon: Icon, darkMode }) => (
-  <div className={`${darkMode ? 'bg-gray-800' : 'bg-white'} bg-opacity-30 backdrop-blur-sm rounded-lg p-4 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-lg`}>
-    <Icon className="text-4xl mb-2" />
-    <h3 className="text-lg font-semibold mb-1">{title}</h3>
-    <p className="text-sm">{value}</p>
+  <div className={`
+    ${darkMode
+      ? 'bg-gray-900 bg-opacity-80 text-white border-b-4 border-purple-500 hover:shadow-[0_10px_20px_rgba(147,51,234,0.5)]'
+      : 'bg-gradient-to-br from-blue-100 to-pink-100 text-gray-800 shadow-[0_8px_30px_rgba(0,0,0,0.12)]'}
+    rounded-2xl p-6 transition-all duration-300 transform hover:scale-105
+    backdrop-filter backdrop-blur-lg
+    flex flex-col items-center justify-center
+    shadow-[0_10px_20px_rgba(0,0,0,0.2)]
+  `}>
+    <Icon className={`text-5xl mb-4 ${darkMode ? 'text-purple-400' : 'text-blue-600'}
+      group-hover:text-pink-500 transition-colors duration-300`} />
+    <h3 className={`text-xl font-bold mb-2 italic ${darkMode ? 'text-white' : 'text-sky-800'}`}>{title}</h3>
+    <p className={`text-sm font-bold italic ${darkMode ? 'text-white' : 'text-gray-600'}`}>{value}</p>
   </div>
 );
 
-const ApiSummaryWidget = ({ data, darkMode, isLoading, onRefresh }) => {
+const ApiSummaryWidget = ({ darkMode, data, isLoading, onRefresh }) => {
   if (isLoading) {
-    return <div className="text-center text-white animate-pulse">Loading...</div>;
+    return (
+      <div className={`text-center ${darkMode ? 'text-white' : 'text-gray-800'}
+         animate-pulse text-2xl font-bold p-12 italic`}>
+        Loading...
+      </div>
+    );
   }
 
   if (!data) {
     return (
-      <div className="text-center text-white">
+      <div className={`text-center ${darkMode ? 'text-white' : 'text-gray-800'}
+         text-xl font-semibold p-12 italic`}>
         No data available. Please try refreshing.
       </div>
     );
@@ -35,56 +49,49 @@ const ApiSummaryWidget = ({ data, darkMode, isLoading, onRefresh }) => {
   };
 
   return (
-    <div className="relative">
-      {/* Background Video */}
-      <div className="absolute inset-0 overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="object-cover w-full h-full"
-          onError={(event) => {
-            console.error('Error loading video:', event);
-            event.target.style.display = 'none';
-          }}
-        >
-          <source src={ReactVideo} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+    <div className={`relative z-10 ${darkMode ? 'bg-black' : 'bg-gradient-to-r from-blue-100 to-pink-100'}
+       bg-opacity-90 backdrop-filter backdrop-blur-xl rounded-3xl
+       overflow-hidden transition-all duration-300 ease-in-out p-8`}>
+      <h2 className={`
+        text-4xl font-extrabold mb-8 text-center italic
+        ${darkMode
+           ? 'text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600'
+           : 'text-gray-800'}
+      `}>
+        API Summary
+      </h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {Object.entries(data).map(([key, value]) =>
+          value && (
+            <BentoCard
+              key={key}
+              title={value.title || key}
+              value={value.value || 'N/A'}
+              icon={cardComponents[key] || FileText}
+              darkMode={darkMode}
+            />
+          )
+        )}
       </div>
-
-      {/* Content Overlay */}
-      <div className="relative z-10 bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)] backdrop-blur-md text-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 ease-in-out p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {Object.entries(data).map(([key, value]) => 
-            value && (
-              <BentoCard 
-                key={key} 
-                {...value}
-                icon={cardComponents[key]}
-                darkMode={darkMode} 
-              />
-            )
-          )}
-        </div>
-        <button 
+      <div className="mt-12 text-center">
+        <button
           className={`
-            px-6 py-3 rounded-xl
-            bg-gradient-to-r from-purple-500 to-pink-500 text-white
-            flex items-center justify-center
-            transition duration-300 ease-in-out 
-            relative overflow-hidden 
-            focus:outline-none hover:from-purple-600 hover:to-pink-600
+            px-8 py-4 rounded-full text-lg font-bold mb-8
+            ${darkMode
+              ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:shadow-[0_0_20px_rgba(147,51,234,0.5)]'
+              : 'bg-gradient-to-r from-blue-500 to-pink-500 text-white shadow-lg shadow-blue-500/50'}
+            flex items-center justify-center mx-auto
+            transition duration-300 ease-in-out
+            hover:from-purple-700 hover:to-pink-700
+            focus:outline-none focus:ring-4 focus:ring-purple-500 focus:ring-opacity-50
             disabled:opacity-50 disabled:cursor-not-allowed
-            group
+            transform hover:scale-105
           `}
           onClick={onRefresh}
           disabled={isLoading}
         >
-          <RefreshCw size={16} className={`mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-          Refresh
-          <div className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-pink-500 to-cyan-500 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out origin-left shadow-glow"></div>
+          <RefreshCw size={20} className={`mr-3 ${isLoading ? 'animate-spin' : ''}`} />
+          Refresh Data
         </button>
       </div>
     </div>

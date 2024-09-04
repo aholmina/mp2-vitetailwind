@@ -171,7 +171,7 @@ const YouTubeComponent = ({ darkMode }) => {
       } text-white`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl font-bold mb-8 text-center text-sky-400">YouTube Explorer</h2>
+        <h2 className="text-4xl font-bold mb-8 text-center text-sky-400 italic">YouTube Explorer</h2>
         <form onSubmit={handleSearch} className="mb-6">
           <div className="flex rounded-lg overflow-hidden">
             <input
@@ -207,7 +207,7 @@ const YouTubeComponent = ({ darkMode }) => {
                   ></iframe>
                 </div>
                 <h3 className="text-2xl font-semibold mb-2">{selectedVideo.snippet.title}</h3>
-                <p className="text-gray-300 mb-4">{selectedVideo.snippet.description}</p>
+                <p className="text-gray-300 mb-4 italic">{selectedVideo.snippet.description}</p>
                 {selectedVideo.statistics && (
                   <div className="flex items-center space-x-4 text-sm">
                     <button

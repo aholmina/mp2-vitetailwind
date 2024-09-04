@@ -106,7 +106,7 @@ const CurrencyExchange = ({ darkMode }) => {
 
   return (
     <div className={`p-5 rounded-2xl bg-gradient-to-br from-gray-800 via-pink-500 to-gray-700 text-white shadow-lg h-full flex flex-col transition-all duration-300 ${darkMode ? 'dark' : ''}`}>
-      <h2 className="text-2xl font-semibold mb-4 text-center">Currency Exchange Rates</h2>
+      <h2 className="text-2xl font-semibold mb-7 text-center mt-10 italic">Currency Exchange Rates</h2>
       
       <div className="flex flex-wrap gap-2 mb-5">
         <input

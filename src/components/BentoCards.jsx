@@ -1,37 +1,42 @@
-import React from 'react';
+const BentoCard = React.memo(({ title, imageUrl, apiName, onSelect, isSelected, description, fullDescription, darkMode, icon: Icon }) => {
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
-const BentoCard = ({ title, description, apiName, darkMode }) => (
-  <div className={`${darkMode ? 'bg-gradient-to-r from-blue-200 via-pink-300 to-gray-900' : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)]'} backdrop-blur-md text-white rounded-2xl overflow-hidden shadow-lg transition-all duration-300 ease-in-out p-6`}>
-    <h3 className="text-2xl font-semibold mb-2">{apiName}</h3>
-    <h4 className="text-xl font-medium mb-1">{title}</h4>
-    <p className="text-base">{description}</p>
-  </div>
-);
-
-const BentoCards = ({ data, isLoading, darkMode }) => {
-  if (isLoading) {
-    return <div className="text-center text-white">Loading API data...</div>;
-  }
-
-  if (!data) {
-    return <div className="text-center text-white">No API data available</div>;
-  }
-
-  const apiKeys = ['currents', 'weather', 'currency', 'youtube'];
+  const toggleDescription = (e) => {
+    e.stopPropagation();
+    setShowFullDescription(!showFullDescription);
+  };
 
   return (
-    <div className="grid grid-cols-2 gap-6">
-      {apiKeys.map((key) => (
-        <BentoCard
-          key={key}
-          title={data[key]?.title || 'N/A'}
-          description={data[key]?.description || 'No description available'}
-          apiName={data[key]?.apiName || key.toUpperCase()}
-          darkMode={darkMode}
-        />
-      ))}
+    <div
+      onClick={onSelect}
+      className={`
+        ${darkMode 
+          ? 'bg-gray-900 bg-opacity-80 text-white border-b-4 border-purple-500 hover:shadow-[0_10px_20px_rgba(147,51,234,0.5)]' 
+          : 'bg-gradient-to-br from-blue-100 to-pink-100 text-gray-800 shadow-[0_8px_30px_rgba(0,0,0,0.12)]'}
+        rounded-2xl p-6 transition-all duration-300 transform hover:scale-105
+        backdrop-filter backdrop-blur-lg cursor-pointer
+        ${isSelected ? 'ring-2 ring-purple-500' : ''}
+        h-[220px] flex flex-col justify-between relative group overflow-hidden
+      `}
+    >
+      {imageUrl && <img src={imageUrl} alt={title} className="absolute inset-0 w-full h-full object-cover opacity-20 rounded-2xl" />}
+      <div className="relative z-10">
+        {Icon && <Icon className={`text-4xl mb-4 ${darkMode ? 'text-purple-400' : 'text-purple-600'} group-hover:text-white transition-colors duration-300`} />}
+        <h5 className={`text-lg font-bold mb-2 ${darkMode ? 'text-purple-400' : 'text-purple-600'} group-hover:text-white transition-colors duration-300`}>{apiName}</h5>
+        <h6 className={`text-xl font-extrabold mb-2 ${darkMode ? 'text-white italic' : 'text-gray-800 italic'} group-hover:text-white transition-colors duration-300`}>{title}</h6>
+        <p className={`text-sm font-medium ${darkMode ? 'text-gray-300 italic' : 'text-gray-600 italic'} group-hover:text-white transition-colors duration-300`}>
+          {showFullDescription ? fullDescription : description}
+          {fullDescription && fullDescription !== description && (
+            <button 
+              onClick={toggleDescription}
+              className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
+            >
+              {showFullDescription ? 'Show Less' : 'Show More'} 
+            </button>
+          )}
+        </p>
+      </div>
+      <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 opacity-0 group-hover:opacity-90 transition-opacity duration-300 rounded-2xl"></div>
     </div>
   );
-};
-
-export default BentoCards;
+});

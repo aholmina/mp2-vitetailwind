@@ -51,7 +51,11 @@ const About = ({ darkMode }) => {
 
   const BentoCard = ({ children, className, onClick }) => (
     <div 
-      className={`bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-3xl p-6 shadow-lg ${className}`}
+      className={`${
+        darkMode 
+          ? 'bg-gradient-to-l from-[hsla(323,57%,39%,0.7)] to-[hsla(197,100%,85%,0.7)] hover:shadow-[0_10px_20px_rgba(2,132,199,0.5),_0_6px_6px_rgba(219,39,119,0.5)] hover:bg-gradient-to-r hover:from-sky-500 hover:to-pink-500' 
+          : 'bg-gradient-to-l from-[hsla(197,100%,85%,0.7)] to-[hsla(323,57%,39%,0.7)]'
+      } backdrop-blur-lg rounded-3xl p-6 shadow-lg ${className} transition-all duration-300`}
       onClick={onClick}
     >
       {children}
@@ -72,7 +76,7 @@ const About = ({ darkMode }) => {
         whileHover={{ scale: 1.1, zIndex: 10 }}
         className={`absolute w-20 sm:w-24 md:w-28 p-2 sm:p-3 rounded-2xl shadow-lg flex flex-col items-center justify-center text-center cursor-pointer ${
           darkMode 
-            ? 'bg-gradient-to-r from-[hsla(323,57%,39%,0.7)] to-[hsla(197,100%,85%,0.7)]' 
+            ? 'bg-gradient-to-r from-[hsla(323,57%,39%,0.7)] to-[hsla(197,100%,85%,0.7)] hover:shadow-[0_10px_20px_rgba(2,132,199,0.5),_0_6px_6px_rgba(219,39,119,0.5)] hover:bg-gradient-to-r hover:from-sky-500 hover:to-pink-500' 
             : 'bg-gradient-to-r from-[hsla(197,100%,85%,0.7)] to-[hsla(323,57%,39%,0.7)]'
         } backdrop-blur-md`}
         style={{
@@ -81,15 +85,15 @@ const About = ({ darkMode }) => {
         onMouseEnter={() => setHoveredCard(index)}
         onMouseLeave={() => setHoveredCard(null)}
       >
-        <FontAwesomeIcon icon={feature.icon} size="lg" className="text-white mb-2" />
-        <h4 className="text-xs sm:text-sm font-semibold mb-1 text-white">{feature.title}</h4>
+        <FontAwesomeIcon icon={feature.icon} size="lg" className={darkMode ? 'text-white mb-2' : 'text-gray-800 mb-2'} />
+        <h4 className={`text-xs sm:text-sm font-semibold mb-1 ${darkMode ? 'text-white' : 'text-gray-800'}`}>{feature.title}</h4>
         <AnimatePresence>
           {hoveredCard === index && (
             <motion.p
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="text-white text-xs overflow-hidden"
+              className={`${darkMode ? 'text-white italic' : 'text-gray-800 italic'} text-xs overflow-hidden`}
             >
               {feature.description}
             </motion.p>
@@ -113,10 +117,14 @@ const About = ({ darkMode }) => {
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.9, opacity: 0 }}
-            className="w-full max-w-2xl bg-gradient-to-r from-[hsla(323,57%,39%,0.9)] to-[hsla(197,100%,85%,0.9)] backdrop-filter backdrop-blur-lg rounded-3xl p-6 sm:p-8"
+            className={`w-full max-w-2xl ${
+              darkMode 
+                ? 'bg-gradient-to-l from-[hsla(323,57%,39%,0.9)] to-[hsla(197,100%,85%,0.9)]' 
+                : 'bg-gradient-to-l from-[hsla(197,100%,85%,0.9)] to-[hsla(323,57%,39%,0.9)]'
+            } backdrop-filter backdrop-blur-lg rounded-3xl p-6 sm:p-8`}
             onClick={(e) => e.stopPropagation()}
           >
-            <button onClick={onClose} className="absolute top-4 right-4 text-white">
+            <button onClick={onClose} className={`absolute top-4 right-4 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
               <FontAwesomeIcon icon={faTimes} size="lg" />
             </button>
             {children}
@@ -129,15 +137,15 @@ const About = ({ darkMode }) => {
   return (
     <section className={`pt-24 pb-16 transition-all duration-300 w-full min-h-screen ${
       darkMode 
-        ? 'bg-gradient-to-r from-[hsla(197,100%,85%,0.603)] via-gray-500 to-gray-900 text-white' 
-        : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)] text-gray-900'
-    } backdrop-blur-md overflow-hidden`}>
+        ? 'bg-black text-white' 
+        : 'bg-white text-gray-900'
+    } overflow-hidden`}>
       <div className="container mx-auto px-4 relative">
         <motion.h1 
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-3xl sm:text-4xl md:text-5xl font-bold mb-24 text-center text-white"
+          className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-24 text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}
         >
           About Data HUB
         </motion.h1>
@@ -151,8 +159,8 @@ const About = ({ darkMode }) => {
           
           <div className="flex flex-col gap-8 w-full max-w-md">
             <BentoCard className="transform hover:scale-105 transition-all duration-300">
-              <h3 className="text-xl sm:text-2xl font-semibold mb-4 text-center text-white">All-in-One Information Hub</h3>
-              <p className="text-white text-center text-sm">
+              <h3 className={`text-xl sm:text-2xl font-semibold mb-4 text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>All-in-One Information Hub</h3>
+              <p className={`${darkMode ? 'text-white' : 'text-gray-800'} text-center text-sm italic`}>
                 Data HUB brings together news, weather, AI insights, YouTube content, currency exchange rates, and Google Calendar integration in one seamless experience.
               </p>
             </BentoCard>
@@ -162,14 +170,14 @@ const About = ({ darkMode }) => {
                 <img src={creator.photo} alt={creator.name} className="w-full h-full object-cover rounded-2xl" />
               </BentoCard>
               <BentoCard className="col-span-1 row-span-1 flex flex-col justify-center">
-                <h4 className="text-lg font-semibold text-white">{creator.name}</h4>
-                <p className="text-sm text-white">{creator.role}</p>
+                <h4 className={`text-lg font-semibold ${darkMode ? 'text-white' : 'text-gray-800'}`}>{creator.name}</h4>
+                <p className={`text-sm ${darkMode ? 'text-white italic' : 'text-gray-800 italic'}`}>{creator.role}</p>
               </BentoCard>
               <BentoCard 
                 className="col-span-2 cursor-pointer transition-all duration-300 hover:shadow-2xl"
                 onClick={() => setShowCreatorModal(true)}
               >
-                <p className="text-white text-sm text-center">More About the Creator</p>
+                <p className={`${darkMode ? 'text-white' : 'text-gray-800'} text-sm text-center`}>More About the Creator</p>
               </BentoCard>
             </div>
           </div>
@@ -177,10 +185,10 @@ const About = ({ darkMode }) => {
       </div>
 
       <ResponsiveModal isOpen={showCreatorModal} onClose={() => setShowCreatorModal(false)}>
-        <div className="flex flex-col items-center text-white">
+        <div className={`flex flex-col items-center ${darkMode ? 'text-white italic' : 'text-gray-800 italic'}`}>
           <img src={creator.photo} alt={creator.name} className="w-20 h-20 sm:w-24 sm:h-24 rounded-full mb-2" />
           <h2 className="text-xl sm:text-2xl font-bold mb-1">{creator.name}</h2>
-          <p className="text-sm sm:text-base mb-3">{creator.role}</p>
+          <p className="text-sm italic sm:text-base  mb-3">{creator.role}</p>
           <div className="text-xs sm:text-sm leading-relaxed space-y-2">
             {creator.projectJourney.split('\n\n').map((paragraph, index, array) => (
               <p key={index} className={index === array.length - 1 ? 'mb-6' : ''}>

@@ -45,7 +45,6 @@ export const fetchCurrentsNews = async () => {
     const news = response.data.news[0];
     return {
       title: news.title,
-      description: news.description,
       image: news.image || 'https://via.placeholder.com/150?text=Currents News'
     };
   } catch (error) {
@@ -61,7 +60,6 @@ export const fetchGNews = async () => {
     const news = response.data.articles[0];
     return {
       title: news.title,
-      description: news.description,
       image: news.image || 'https://via.placeholder.com/150?text=GNews'
     };
   } catch (error) {
@@ -115,14 +113,12 @@ export const fetchYouTube = async () => {
     const video = response.data.items[0];
     return {
       title: video.snippet.title,
-      description: video.snippet.description,
       image: video.snippet.thumbnails.medium.url
     };
   } catch (error) {
     console.error('Error fetching YouTube data:', error.response ? error.response.data : error.message);
     return { 
       title: 'YouTube Unavailable', 
-      description: 'Failed to fetch YouTube data', 
       image: 'https://via.placeholder.com/150?text=YouTube Error' 
     };
   }
@@ -140,14 +136,12 @@ export const fetchGeminiAI = async (prompt = "Give me a brief insight about toda
     const generatedText = response.data.candidates[0].content.parts[0].text;
     return {
       title: 'Gemini AI Insight',
-      description: generatedText,
       image: 'https://via.placeholder.com/150?text=Gemini AI'
     };
   } catch (error) {
     console.error('Error fetching Gemini AI data:', error);
     return { 
       title: 'Gemini AI Unavailable', 
-      description: 'Failed to fetch Gemini AI insight', 
       image: 'https://via.placeholder.com/150?text=Gemini AI Error' 
     };
   }

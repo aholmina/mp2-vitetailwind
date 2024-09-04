@@ -90,7 +90,7 @@ const GeminiAI = () => {
   return (
     <section className="py-8 bg-gradient-to-br from-gray-900 via-pink-500 to-gray-800 text-white min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-4xl font-bold mb-8 text-center text-sky-400">Gemini AI Assistant</h2>
+        <h2 className="text-4xl font-bold mb-8 text-center text-sky-400 italic">Gemini AI Assistant</h2>
         <form onSubmit={handleSubmit} className="mb-6">
           <div className="flex rounded-lg overflow-hidden">
             <input
