@@ -60,7 +60,7 @@ const Footer = ({ darkMode }) => {
                 : 'bg-gradient-to-r from-blue-700 to-pink-700 text-transparent bg-clip-text'
             }`}>Location</h5>
             <ContactInfo Icon={MapPin} text="123 Data Street, Las Pinas City, Metro Manila, Philippines" darkMode={darkMode} />
-            <div className="mt-4 h-64 w-full">
+            <div className="mt-4 h-64 w-full mb-5">
               <MapComponent />
             </div>
             <AnimatedUnderline darkMode={darkMode} />

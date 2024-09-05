@@ -104,7 +104,7 @@ const OpenWeatherMapWidget = ({ darkMode, data }) => {
   if (!weatherData || !weatherData.current) return <div className="text-center text-white text-sm">No weather data available</div>;
 
   return (
-    <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)]'} backdrop-blur-md rounded-xl overflow-hidden shadow-lg transition-all duration-300 ease-in-out`}>
+    <div className={`${darkMode ? 'bg-gray-900 text-white' : 'bg-gradient-to-r from-[hsla(323,57%,39%,0.603)] to-[hsla(197,100%,85%,0.603)]'} backdrop-blur-md rounded-xl overflow-hidden shadow-lg transition-all duration-300 ease-in-out mt-5`}>
       <div className="p-4">
         <form onSubmit={handleSubmit} className="mb-6">
           <div className="flex items-center">

@@ -29,29 +29,26 @@ const BentoCard = React.memo(({ title, imageUrl, apiName, onSelect, isSelected, 
     <div
       onClick={onSelect}
       className={`
-        ${darkMode 
-          ? 'bg-gray-900 text-white'
+        ${darkMode
+          ? 'bg-gray-900 bg-opacity-30 text-white border-b-4 border-purple-500'
           : 'bg-gradient-to-br from-white via-pink-100 to-blue-100 text-gray-800'}
         rounded-2xl p-6 transition-all duration-300 transform hover:scale-105
         backdrop-filter backdrop-blur-lg cursor-pointer
         ${isSelected ? 'ring-2 ring-pink-500' : ''}
         h-[220px] flex flex-col justify-between relative group overflow-hidden
-        ${darkMode 
-          ? 'shadow-[0_0_15px_rgba(255,182,193,0.3),_0_0_30px_rgba(216,191,216,0.3)] hover:shadow-[0_0_30px_rgba(255,182,193,0.5),_0_0_60px_rgba(216,191,216,0.5)]' 
+        ${darkMode
+          ? 'hover:shadow-[0_10px_20px_rgba(147,51,234,0.5)]'
           : 'shadow-[0_10px_20px_rgba(0,0,0,0.1)] hover:shadow-[0_20px_40px_rgba(0,0,0,0.2)]'}
         ${!darkMode && 'border-2 border-transparent hover:border-gradient-to-r from-blue-300 to-pink-300'}
+        shadow-[inset_0_0_15px_rgba(255,255,255,0.2)]
       `}
-      style={{
-        transform: darkMode ? 'none' : 'perspective(1000px) rotateX(5deg)',
-        transition: 'all 0.3s ease',
-      }}
     >
       {imageUrl && <img src={imageUrl} alt={title} className="absolute inset-0 w-full h-full object-cover opacity-20 rounded-2xl" />}
       <div className="relative z-10">
-        {Icon && <Icon className={`text-4xl mb-4 ${darkMode ? 'text-pink-400' : 'text-blue-600'} group-hover:text-white transition-colors duration-300`} />}
+        {Icon && <Icon className={`text-4xl mb-4 ${darkMode ? 'text-purple-400' : 'text-blue-600'} group-hover:text-white transition-colors duration-300`} />}
         <h5 className={`text-lg font-bold mb-2 ${
           darkMode 
-            ? 'text-pink-400 group-hover:text-pink-300'
+            ? 'text-purple-400 group-hover:text-purple-300'
             : 'text-blue-600 group-hover:text-blue-500'
         } transition-colors duration-300`}>{apiName}</h5>
         <h6 className={`text-xl font-extrabold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'} group-hover:text-white transition-colors duration-300`}>{title}</h6>
@@ -59,7 +56,7 @@ const BentoCard = React.memo(({ title, imageUrl, apiName, onSelect, isSelected, 
       </div>
       <div className={`absolute inset-0 ${
         darkMode 
-          ? 'bg-gradient-to-r from-pink-500 to-purple-500' 
+          ? 'bg-gradient-to-r from-purple-500 to-pink-500' 
           : 'bg-gradient-to-r from-blue-400 to-indigo-500'
       } opacity-0 group-hover:opacity-90 transition-opacity duration-300 rounded-2xl`}></div>
     </div>
@@ -114,7 +111,7 @@ const HomePage = ({ darkMode, apiData, isLoading, dashboardRef, onRefresh }) => 
 
   return (
     <section className={`transition-all duration-300 w-full min-h-screen ${
-      darkMode ? 'bg-black' : 'bg-gradient-to-r from-gray-100 via-pink-100 to-gray-200'
+      darkMode ? 'bg-black' : 'bg-gradient-to-r from-sky-100 via-pink-100 to-sky-200'
     }`}>
       <HomeSection 
         darkMode={darkMode} 
